@@ -1,0 +1,17 @@
+# Never publish: secrets, local data, fonts, OS junk
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.bak
+*.woff
+*.woff2
+*.ttf
+*.otf
+.DS_Store
+node_modules/
+.venv/
+__pycache__/

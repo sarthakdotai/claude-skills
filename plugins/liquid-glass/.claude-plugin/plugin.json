@@ -1,0 +1,10 @@
+{
+  "name": "liquid-glass",
+  "version": "1.0.0",
+  "description": "Apple-grade Liquid Glass for the web: the frosted material recipe, SVG-displacement refraction, a WebGL tier for canvas/video/Safari, a CSS fallback and a liquid-metal logo shader.",
+  "author": { "name": "sarthakdotai" },
+  "homepage": "https://github.com/sarthakdotai/claude-skills",
+  "repository": "https://github.com/sarthakdotai/claude-skills",
+  "license": "MIT",
+  "keywords": ["liquid-glass", "glassmorphism", "css", "svg", "webgl", "design"]
+}

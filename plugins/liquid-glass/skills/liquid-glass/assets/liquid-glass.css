@@ -1,0 +1,137 @@
+/**
+ * liquid-glass.css — a physical frosted MATERIAL, not a tinted filter.
+ *
+ * The five rules of Apple-grade glass, encoded here (see SKILL.md):
+ *   1. DIFFUSE  — blur ≥ 20px obliterates the backdrop into a smooth wash.
+ *   2. TONE     — saturate + brightness + a strong tint so bright colours behind
+ *                 the glass never turn muddy and content stays readable.
+ *   3. EDGE     — a crisp bright inner light-catch defines where glass stops.
+ *   4. FLOAT    — a large soft shadow lifts the pane off the wallpaper.
+ *   5. OPTICS   — refraction + moving specular are layered on by JS (Chromium).
+ *
+ * These base rules already satisfy 1–4 in EVERY browser (frosted, floating,
+ * edged pane). liquid-glass.js adds rule 5 where it renders.
+ */
+
+.liquid-glass {
+  /* ---- material tunables ---- */
+  --lg-radius: 24px;
+  --lg-tint: 255 255 255;      /* body colour (space-separated RGB) */
+  --lg-tint-opacity: 0.28;     /* STRONG wash — this de-muddies + diffuses. */
+  --lg-blur: 24px;             /* heavy diffusion — obliterate the backdrop.  */
+  --lg-saturate: 1.9;          /* keep the wash lively, not grey.             */
+  --lg-brightness: 1.08;       /* lift the backdrop so it reads clean (light).*/
+  --lg-highlight: 255 255 255;
+  --lg-edge: 0.75;             /* top inner light-catch strength.             */
+  --lg-hairline: 0.16;         /* full-perimeter cut-edge strength.           */
+  --lg-rim: 0.9;               /* peak specular rim opacity.                  */
+  --lg-angle: 135deg;          /* light direction; JS updates on pointer.     */
+
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--lg-radius);
+
+  /* Rule 2: strong body wash (dominates the diffused backdrop, kills mud). */
+  background: rgb(var(--lg-tint) / var(--lg-tint-opacity));
+
+  /* Rules 1 + 2: heavy diffusion + tone management. Works everywhere; JS
+     prepends url(#filter) to this exact chain on Chromium for refraction. */
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+
+  /* Rules 3 + 4: float it off the wallpaper AND cut a physical edge. */
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.22),                    /* soft float shadow  */
+    0 2px 6px rgba(0, 0, 0, 0.12),                      /* contact shadow     */
+    inset 0 1px 1px rgb(var(--lg-highlight) / var(--lg-edge)),      /* top catch */
+    inset 0 0 0 1px rgb(var(--lg-highlight) / var(--lg-hairline)),  /* hairline  */
+    inset 0 -1px 1px rgb(0 0 0 / 0.06);                 /* bottom shade       */
+  color: inherit;
+}
+
+/* Rule 3 (continued): the specular rim glows ALL around (floor ~0.25) and peaks
+   along the light direction — a cut-glass edge that catches light. */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    var(--lg-angle),
+    rgb(var(--lg-highlight) / var(--lg-rim)),
+    rgb(var(--lg-highlight) / 0.3) 35%,
+    rgb(var(--lg-highlight) / 0.25) 65%,
+    rgb(var(--lg-highlight) / calc(var(--lg-rim) * 0.7))
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Rule 5 (partial): the highlight that moves with pointer/tilt. */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    var(--lg-angle),
+    rgb(var(--lg-highlight) / 0.18),
+    rgb(var(--lg-highlight) / 0) 45%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+  transition: background 120ms linear;
+}
+
+/* Real content sits above the highlight layers. */
+.liquid-glass > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---- Dark glass: smoked pane. Add class `liquid-glass--dark`. ---- */
+.liquid-glass--dark {
+  --lg-tint: 22 22 26;
+  --lg-tint-opacity: 0.5;
+  --lg-brightness: 0.82;       /* darken the backdrop instead of lifting it */
+  --lg-edge: 0.4;
+  --lg-hairline: 0.1;
+  --lg-rim: 0.55;
+}
+
+/* ---- Shapes ---- */
+.liquid-glass--pill   { --lg-radius: 999px; }
+.liquid-glass--circle { --lg-radius: 50%; aspect-ratio: 1; }
+
+/* ---- Interaction: liquid squish + settle ---- */
+.liquid-glass--interactive {
+  transition:
+    transform 400ms cubic-bezier(0.2, 0.9, 0.2, 1.2),
+    box-shadow 300ms ease;
+  cursor: pointer;
+}
+.liquid-glass--interactive:active { transform: scale(0.97); }
+
+/* ---- Accessibility ---- */
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass {
+    background: rgb(var(--lg-tint) / 0.92);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass::after { transition: none; }
+  .liquid-glass--interactive { transition: none; }
+  .liquid-glass--interactive:active { transform: none; }
+}

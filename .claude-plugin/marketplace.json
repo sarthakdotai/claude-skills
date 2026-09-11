@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sarthakdotai",
+  "description": "Claude Code skills by sarthakdotai.",
+  "owner": { "name": "sarthakdotai" },
+  "plugins": [
+    {
+      "name": "liquid-glass",
+      "description": "Apple-grade Liquid Glass for the web: the frosted material recipe, SVG-displacement refraction, a WebGL tier for canvas/video/Safari, a CSS fallback and a liquid-metal logo shader.",
+      "author": { "name": "sarthakdotai" },
+      "source": "./plugins/liquid-glass",
+      "category": "design",
+      "homepage": "https://github.com/sarthakdotai/claude-skills/tree/main/plugins/liquid-glass"
+    },
+    {
+      "name": "grammar-check",
+      "description": "Grammarly-style writing check: correctness, clarity, engagement and delivery, with numbered fixes, a computed score and a deterministic AI-pattern score.",
+      "author": { "name": "sarthakdotai" },
+      "source": "./plugins/grammar-check",
+      "category": "productivity",
+      "homepage": "https://github.com/sarthakdotai/claude-skills/tree/main/plugins/grammar-check"
+    }
+  ]
+}

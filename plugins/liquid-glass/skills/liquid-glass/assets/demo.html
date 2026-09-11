@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Liquid Glass — demo</title>
+<link rel="stylesheet" href="liquid-glass.css" />
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    color: #fff;
+    /* Busy, colourful backdrop so refraction + aberration are obvious. */
+    background:
+      radial-gradient(circle at 20% 20%, #ff5f6d, transparent 40%),
+      radial-gradient(circle at 80% 30%, #12c2e9, transparent 45%),
+      radial-gradient(circle at 50% 80%, #f7b733, transparent 45%),
+      repeating-linear-gradient(45deg, #1a1a2e 0 22px, #16213e 22px 44px);
+    display: grid;
+    place-items: center;
+    gap: 28px;
+    padding: 48px;
+  }
+  .stage { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .row { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  h1 { font-size: 40px; margin: 0; letter-spacing: -0.02em; text-shadow: 0 2px 8px rgba(0,0,0,.35); }
+  .card { width: 320px; padding: 26px 28px; }
+  .card h2 { margin: 0 0 6px; font-size: 20px; }
+  .card p { margin: 0; opacity: 0.85; font-size: 14px; line-height: 1.5; }
+  .pill { padding: 14px 26px; font-size: 16px; font-weight: 600; }
+  .circle { width: 92px; display: grid; place-items: center; font-size: 26px; }
+  .fineprint { font-size: 12px; opacity: 0.7; max-width: 520px; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <h1>Liquid&nbsp;Glass</h1>
+
+    <div class="liquid-glass card" style="--lg-radius:28px">
+      <h2>Refraction, not blur</h2>
+      <p>The colourful backdrop bends through the beveled edge and stays crisp in
+         the centre — with a lit rim and a highlight that follows your cursor.</p>
+    </div>
+
+    <div class="row">
+      <button class="liquid-glass liquid-glass--interactive pill" style="--lg-radius:999px">
+        Continue
+      </button>
+      <div class="liquid-glass liquid-glass--interactive circle" style="--lg-radius:50%">✳︎</div>
+    </div>
+
+    <p class="fineprint" id="status">detecting…</p>
+  </div>
+
+  <script type="module">
+    import { LiquidGlass, supportsRefraction } from './liquid-glass.js';
+
+    new LiquidGlass(document.querySelector('.card'), { radius: 28, scale: 70, chroma: 0.5 });
+    new LiquidGlass(document.querySelector('.pill'), { radius: 999, scale: 40, chroma: 0.4 });
+    new LiquidGlass(document.querySelector('.circle'), { radius: 46, scale: 46, chroma: 0.5 });
+
+    document.getElementById('status').textContent = supportsRefraction
+      ? 'Refraction ON (Chromium) — SVG displacement + chromatic aberration active.'
+      : 'Fallback: frosted glass (this browser does not render SVG filters in backdrop-filter).';
+  </script>
+</body>
+</html>
