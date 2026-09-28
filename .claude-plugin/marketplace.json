@@ -19,6 +19,14 @@
       "source": "./plugins/grammar-check",
       "category": "productivity",
       "homepage": "https://github.com/sarthakdotai/claude-skills/tree/main/plugins/grammar-check"
+    },
+    {
+      "name": "legal-check",
+      "description": "Checks an app for six common legal traps (COPPA age gate, Google-hosted fonts, session replay, CAN-SPAM email footer, auto-renewal terms, DMCA agent) and fixes them. Not legal advice; no guarantee of compliance.",
+      "author": { "name": "sarthakdotai" },
+      "source": "./plugins/legal-check",
+      "category": "compliance",
+      "homepage": "https://github.com/sarthakdotai/claude-skills/tree/main/plugins/legal-check"
     }
   ]
 }

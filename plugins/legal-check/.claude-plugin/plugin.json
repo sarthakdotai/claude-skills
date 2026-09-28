@@ -1,0 +1,10 @@
+{
+  "name": "legal-check",
+  "version": "1.0.0",
+  "description": "Checks an app for six common legal traps (COPPA age gate, Google-hosted fonts, session replay, CAN-SPAM email footer, auto-renewal terms, DMCA agent) and fixes them. Not legal advice; no guarantee of compliance.",
+  "author": { "name": "sarthakdotai" },
+  "homepage": "https://github.com/sarthakdotai/claude-skills",
+  "repository": "https://github.com/sarthakdotai/claude-skills",
+  "license": "MIT",
+  "keywords": ["legal", "compliance", "privacy", "coppa", "gdpr", "can-spam", "dmca", "subscriptions"]
+}
